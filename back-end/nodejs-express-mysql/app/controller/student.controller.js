@@ -1,4 +1,4 @@
-const Student = require("../models/student.model.js");
+const Student = require("../models/student.model");
 
 // Get all students
 exports.getAllStudents = (req, res) => {
@@ -17,10 +17,10 @@ exports.getAllStudents = (req, res) => {
 // Add a new student
 exports.addStudent = (req, res) => {
   if (
-    !req.body.name ||
-    !req.body.gender ||
     !req.body.roll_no ||
-    !req.body.branch
+    !req.body.name ||
+    !req.body.branch ||
+    !req.body.gender
   ) {
     return res.status(400).send({
       message:
@@ -29,7 +29,7 @@ exports.addStudent = (req, res) => {
   }
 
   const newStudent = new Student({
-    roll_no: req.body.roll_no,
+    roll_no: req.body.rollno,
     name: req.body.name,
     branch: req.body.branch,
     gender: req.body.gender,
@@ -48,6 +48,7 @@ exports.addStudent = (req, res) => {
 };
 
 // Update a student's name, branch, or gender
+// Update student data
 exports.updateStudent = (req, res) => {
   const roll_no = req.params.roll_no;
 
@@ -58,18 +59,10 @@ exports.updateStudent = (req, res) => {
     });
   }
 
-  const updatedStudent = {
-    name: req.body.name,
-    branch: req.body.branch,
-    gender: req.body.gender,
-  };
-
-  // Remove undefined values from updatedStudent object
-  // for (let key in updatedStudent) {
-  //   if (!updatedStudent[key]) {
-  //     delete updatedStudent[key];
-  //   }
-  // }
+  const updatedStudent = {};
+  if (req.body.name) updatedStudent.name = req.body.name;
+  if (req.body.branch) updatedStudent.branch = req.body.branch;
+  if (req.body.gender) updatedStudent.gender = req.body.gender;
 
   Student.update(roll_no, updatedStudent, (err, data) => {
     if (err) {

@@ -15,16 +15,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-// app.get("/", (req, res) => {
-//   res.json({ message: "Welcome to the Student API application." });
-// });
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to the Student API application." });
+});
 
 // student routes
-const studentRoutes = require("./app/routes/student.routes");
-app.use("/api", studentRoutes); 
+const studentRoutes = require("./app/routes/student.routes.js");
+app.use("/", studentRoutes); 
 
 // start the server
-const PORT = process.env.PORT || 8086;
+const PORT = process.env.PORT || 8089
+  ;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
